@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Eye, EyeOff, User, Lock, LogIn } from 'lucide-react';
 
-const Login = ({ onLogin }) => {
+const Login = ({ onLogin, onForgotPassword, onContactUs }) => {
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -183,6 +183,7 @@ const Login = ({ onLogin }) => {
               </label>
               <button
                 type="button"
+                onClick={onForgotPassword}
                 className="text-sm text-blue-600 hover:text-blue-700 font-medium"
               >
                 Esqueceu a senha?
@@ -235,7 +236,10 @@ const Login = ({ onLogin }) => {
           <div className="mt-6 text-center">
             <p className="text-xs text-gray-500">
               Não tem uma conta?{' '}
-              <button className="text-blue-600 hover:text-blue-700 font-medium">
+              <button 
+                onClick={onContactUs}
+                className="text-blue-600 hover:text-blue-700 font-medium"
+              >
                 Entre em contato
               </button>
             </p>

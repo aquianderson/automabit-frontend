@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import Header from './components/Header';
 import BottomNavigation from './components/BottomNavigation';
 import Login from './components/Login';
+import ForgotPassword from './components/ForgotPassword';
+import ContactUs from './components/ContactUs';
 import Toast from './components/Toast';
 import ToastContainer from './components/ToastContainer';
 import Inicio from './pages/Inicio';
@@ -18,6 +20,8 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [showWelcomeToast, setShowWelcomeToast] = useState(false);
   const [showLogoutToast, setShowLogoutToast] = useState(false);
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [showContactUs, setShowContactUs] = useState(false);
   const [userName, setUserName] = useState('');
   const [silos, setSilos] = useState([]);
   const [lastAlerts, setLastAlerts] = useState({}); // Para controlar alertas repetidos
@@ -76,6 +80,19 @@ function App() {
     setIsAuthenticated(true);
     setShowWelcomeToast(true);
     setShowLogoutToast(false); // Reset logout toast when logging in
+  };
+
+  const handleForgotPassword = () => {
+    setShowForgotPassword(true);
+  };
+
+  const handleBackToLogin = () => {
+    setShowForgotPassword(false);
+    setShowContactUs(false);
+  };
+
+  const handleContactUs = () => {
+    setShowContactUs(true);
   };
 
   const handleLogout = () => {
@@ -211,11 +228,45 @@ function App() {
     );
   }
 
-  // Se não estiver autenticado, mostrar tela de login
+  // Se não estiver autenticado, mostrar tela de login, esqueceu senha ou contato
   if (!isAuthenticated) {
+    if (showContactUs) {
+      return (
+        <>
+          <ContactUs onBackToLogin={handleBackToLogin} />
+          <Toast
+            message="Logout realizado com sucesso!"
+            type="info"
+            isVisible={showLogoutToast}
+            onClose={() => setShowLogoutToast(false)}
+            duration={3000}
+          />
+        </>
+      );
+    }
+
+    if (showForgotPassword) {
+      return (
+        <>
+          <ForgotPassword onBackToLogin={handleBackToLogin} />
+          <Toast
+            message="Logout realizado com sucesso!"
+            type="info"
+            isVisible={showLogoutToast}
+            onClose={() => setShowLogoutToast(false)}
+            duration={3000}
+          />
+        </>
+      );
+    }
+
     return (
       <>
-        <Login onLogin={handleLogin} />
+        <Login 
+          onLogin={handleLogin} 
+          onForgotPassword={handleForgotPassword}
+          onContactUs={handleContactUs}
+        />
         <Toast
           message="Logout realizado com sucesso!"
           type="info"
